@@ -1,0 +1,40 @@
+name: Add TLG Program
+description: Use this template to add a new TLG analysis program
+title: "[TLG] - <TLG ID> - <Title>"
+labels: ["tlg", "in-progress"]
+assignees: []
+body:
+  - type: input
+    id: tlg_id
+    attributes:
+      label: TLG ID
+      placeholder: e.g. T14.2.1
+  - type: dropdown
+    id: tlg_type
+    attributes:
+      label: Type
+      options:
+        - Table
+        - Listing
+        - Figure
+  - type: input
+    id: title
+    attributes:
+      label: Short Description
+  - type: input
+    id: programmer
+    attributes:
+      label: Programmer GitHub handle
+  - type: input
+    id: qc_reviewer
+    attributes:
+      label: QC Reviewer GitHub handle
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist
+      value: |
+        - [ ] Shell approved
+        - [ ] Program complete
+        - [ ] QC complete
+        - [ ] Final approval
