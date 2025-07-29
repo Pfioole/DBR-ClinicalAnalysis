@@ -1,0 +1,30 @@
+name: Create TLG Notebook from Issue
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  create-notebook:
+    if: contains(github.event.issue.labels.*.name, 'tlg')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install nbformat PyYAML
+
+      - name: Generate notebook from template
+        run: |
+          python .github/scripts/create_notebook.py "${{ github.event.issue.title }}" "${{ github.event.issue.body }}"
+
+      - name: Commit and push notebook
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "📘 Add notebook for ${{ github.event.issue.title }}"
