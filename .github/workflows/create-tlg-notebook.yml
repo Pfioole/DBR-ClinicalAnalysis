@@ -8,6 +8,7 @@ jobs:
   create-notebook:
     if: contains(github.event.issue.labels.*.name, 'tlg')
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,14 +25,17 @@ jobs:
         run: |
           python .github/scripts/create_notebook.py "${{ github.event.issue.title }}" "${{ github.event.issue.body }}"
 
-      - name: Commit changes
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
+
+      - name: Commit notebook
+        run: |
+          git add programs/
           git commit -m "📘 Add notebook for ${{ github.event.issue.title }}" || echo "No changes to commit"
 
-      - name: Push changes using GH_PAT
+      - name: Push changes using PAT
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
