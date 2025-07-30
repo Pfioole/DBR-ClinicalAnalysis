@@ -38,11 +38,11 @@ jobs:
           git checkout -b $BRANCH
           git add programs/
           git commit -m "📘 Add notebook for ${{ github.event.issue.title }}" || echo "Nothing to commit"
-      
+
           # Add remote using explicit PAT injection via shell variable
           echo "Setting remote with PAT..."
-          git remote set-url origin https://x-access-token:$GH_PAT@github.com/${{ github.repository }}
-      
+          git remote set-url origin "https://x-access-token:$GH_PAT@github.com/${{ github.repository }}"
+
           echo "Pushing to $BRANCH..."
           git push origin $BRANCH
 
