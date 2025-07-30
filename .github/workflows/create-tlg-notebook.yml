@@ -30,7 +30,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Create and push notebook to new branch
+      - name: Push changes using PAT to a new branch
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
@@ -38,5 +38,13 @@ jobs:
           git checkout -b $BRANCH
           git add programs/
           git commit -m "📘 Add notebook for ${{ github.event.issue.title }}" || echo "Nothing to commit"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
-          git push origin $BRANCH
+      
+          # Remove default GitHub Action remote
+          git remote remove origin
+      
+          # Add authenticated origin using the GH_PAT
+          git remote add origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+      
+          # Push to new branch
+          git push origin HEAD:$BRANCH
+
